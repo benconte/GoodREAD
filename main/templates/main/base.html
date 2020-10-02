@@ -1,0 +1,383 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+
+        {% if title %}
+            <title>GoodReads - {{ title }}</title>
+        {% else %}
+            <title>Good Reads</title>
+        {% endif %}
+
+    <link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
+    <style type="text/css">
+    .loader_bg{
+      margin-top: 35px;
+      position: fixed;
+      z-index: 999999;
+      background: #fff;
+      width: 100%;
+      height: 100%;
+    }
+
+    .loader{
+      border: 0 solid transparent;
+      border-radius: 50%;
+      width:150px;
+      height: 150px;
+      position: absolute;
+      top: calc(50vh - 75px);
+      left: calc(100vh - 75px);
+    }
+
+    .loader:before, .loader:after{
+      content: "";
+      border: 1em solid #ff5733;
+      border-radius: 50%;
+      width: inherit;
+      height: inherit;
+      position: absolute;
+      top: 0;
+      left: 0;
+      animation: loader 2s linear infinite;
+      opacity: 0;
+    }
+
+    .loader:before{
+      animation-delay: .5s;
+    }
+
+    @keyframes loader{
+      0%{
+      transform: scale(0);
+      opacity: 0;
+      }
+      50%{
+      opacity: 1;
+      }
+      100%{
+      transform: scale(1);
+      opacity: 0;
+      }
+    }
+
+
+
+    /* animation ends here */
+
+
+    .dropdown .dropdown-toggle::after {
+        content: none;
+    }
+
+    .btn-secondary{
+      border-color: lightgrey;
+      width: 160px;
+      height: 40px;
+      color: #fff;
+
+      background: #D0D3D4;
+    }
+    .btn-secondary:hover{
+      cursor: pointer;
+
+    }
+
+    .button-link{
+      background: #987654;
+      border: none;
+    }
+
+    .button-link:hover{
+      height: 80px;
+      cursor: text;
+      background: #8B4513;/* #7E5109 */
+    }
+
+    .book-data{
+      font-family: serif;
+    }
+
+    ul li{
+      display: inline-flex;
+
+    }
+    .navbar-expand-md{
+      width: 100%;
+      height: 80px;
+      background: #987654;/*saddlebrown for hover (#8B4513) palebrown(#987654)best!!  */
+    }
+    .navbar-brand{
+      font-size: 35px;
+      font-family: sans-serif;
+    }
+    .navbar-brand .good{
+      font-family: Courier New;
+      color: #fff;
+    }
+    .navbar-brand .reads{
+      font-weight: bolder;
+    }
+    .nav-bar .nav-ul .nav-li{
+      font-size: 20px;
+      /*
+      width: 100px;
+      height: 80px;
+      background-color: red;
+      text-align: center;
+      */
+      width: 100px;
+      height: 60px;
+      background-color: red;
+      text-align: center;
+    }
+    /*    .nav-link:hover{
+      background: #8B4513;
+      cursor: pointer;
+      height: 75px;
+
+
+    }*/
+
+
+    .nav-bar .nav-ul .nav-input{
+      margin-left: 80px;
+    }
+    .nav-bar .nav-ul .nav-li .input{
+      border-radius: 5px;
+      height: 45px;
+      padding-bottom: 8px;
+
+    }
+    .nav-link{
+      font-size: 25px;
+      color: #fff;
+    }
+
+    .book-title{
+      color: #000;
+    }
+    .book-title:hover{
+      color: #987654;
+      text-decoration: none;
+    }
+
+    .btn-success{
+      border-radius: 5px solid #2ECC71;
+      background: #2ECC71;
+      width: 160px;
+      height: 40px;
+      color: #fff;
+    }
+
+
+    .read-btn:hover{
+      background: #28B463;
+    }
+
+    .btn-secondary{
+      border-color: lightgrey;
+      width: 160px;
+      height: 40px;
+
+      background: #D0D3D4;
+      }
+    .btn .btn-secondary:hover{
+      cursor: pointer;
+      color: white;
+      background: red;
+    }
+
+    .small{/* small is for the footer */
+
+      color: black;
+      margin-top: 30px;
+
+    }
+
+    .book-paragraph{
+      line-height: 80px;
+    }
+
+    .book-image-home{
+      float: left;
+      margin-right: 20px;
+    }
+
+    .book-image-display{
+      float: left;
+      margin-right: 50px;
+    }
+
+    footer{
+      width: 100%;
+      height: 70px;
+      background: #987654;
+      position: fixed;
+      bottom: 0px;
+    }
+
+
+    .like_button{
+      background: red;
+
+    }
+
+    .profile{
+      float: right;
+    }
+
+
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <audio src="C:/Users/benco/Music/Jarico - Island.mp3" autoplay loop controls>sd</audio>
+    <!-- Animation divs starts here --><!-- file:///C:/Users/benco/Music/Jarico%20-%20Island.mp3 -->
+
+    <div class="loader_bg">
+      <div class="loader">
+
+      </div>
+
+    </div>
+
+
+    <!-- Animation divs end here -->
+
+  <nav class="navbar navbar-expand-md navbar-light fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/"><span class="good">good</span><span class="reads">reads</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <button class="button-link" ><a class="nav-link" style="color: #fff;" href="/">Home <span class="sr-only">(current)</span></a></button>
+            </li>
+            <li class="nav-item">
+              <button class="button-link" ><a class="nav-link" style="color: #fff;" href="#">About</a></button>
+            </li>
+
+
+          </ul>
+          <!-- Search form  -->
+          <form method="GET" action="/search" class="form-inline my-2 my-lg-0">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2 ml-4" type="search" placeholder="Search" size="30" aria-label="Search" name="q" value="{{request.GET.query}}">
+            <button class="btn btn-outline-success my-2 my-sm-0" style="border-color: #fff; color: #fff;" type="submit">Search</button>
+          </form>
+
+          <!-- End of form -->
+
+                <!-- Working with profile display -->
+                      <div class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if user.is_authenticated %}
+                            <span class="mr-1 d-none d-lg-inline small" style="color: #fff;">{{user.username}}</span>
+                            <img class="img-profile rounded-circle" src="{{user.profile.image.url}}" width="60" height="60">
+                          </a>
+                          <!-- Dropdown - User Information -->
+                          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown" style="content: none;">
+
+                              <a class="dropdown-item" href="{% url 'profile' %}">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Profile
+                              </a>
+                              <a class="dropdown-item" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Settings
+                              </a>
+                              <a class="dropdown-item" href="{% url 'show_favorite' %}">
+                                <i class="fas fa-heart fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Favorites
+                              </a>
+                              <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                              </a>
+                              </div>
+                            {% else %}
+
+
+
+                            <span class="mr-1 d-none d-lg-inline small" style="color: #fff;">GoodReads</span>
+                            <img class="img-profile rounded-circle" src="{% static 'pen-2695348_1920.jpg' %}" style="
+                                                    background-size: cover;
+                                                    background-repeat: no-repeat;
+                                                    width: 60px;
+                                                    height: 60px;
+                            " >
+                          </a>
+                          <!-- Dropdown - User Information -->
+                          <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown" style="content: none;">
+
+                              <a class="dropdown-item" href="">Book Store</a>
+                              <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+                              <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+                              </div>
+
+                            {% endif %}
+
+                        <div/>
+        </div>
+    </div>
+
+  </nav>
+    <div class="container" style="margin-top: 50px;">
+      <div class="row">
+        <div class="col-lg mt-5">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{message.tags}}">
+                {{ message }}
+
+              </div>
+            {% endfor %}
+          {% endif %}
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+
+    </div>
+
+
+      <footer><div class="small text-center">Copyright © 2020 - GoodReads</div></footer>
+
+
+
+<script>
+
+     setTimeout(function(){
+      $(".loader_bg").fadeToggle();
+     });
+
+  // window.addEventListener("load", function (){
+
+  //     const loader = document.querySelector(".loader_bg");
+  //     loader.style.display = " none";
+  //   });
+</script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+
+
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

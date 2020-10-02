@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Buy Book{% endblock %}
+{% block content %}
+	<div class="content-section" style="margin-bottom: 100px;">
+		<form method="post">
+			{% csrf_token %}
+			<fieldset>
+				<legend><h2>Order book( {{book_name}})</h2></legend>
+				<hr>
+				{{ form|crispy }}
+			</fieldset>
+			<button type="submit" class="btn btn-success">Order Now</button>
+		</form>
+	</div>
+{% endblock %}

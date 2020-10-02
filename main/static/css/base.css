@@ -1,0 +1,215 @@
+.loader_bg{
+  margin-top: 35px;
+  position: fixed;
+  z-index: 999999;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+}
+
+.loader{
+  border: 0 solid transparent;
+  border-radius: 50%;
+  width:150px;
+  height: 150px;
+  position: absolute;
+  top: calc(50vh - 75px);
+  left: calc(100vh - 75px);
+}
+
+.loader:before, .loader:after{
+  content: "";
+  border: 1em solid #ff5733;
+  border-radius: 50%;
+  width: inherit;
+  height: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: loader 2s linear infinite;
+  opacity: 0;
+}
+
+.loader:before{
+  animation-delay: .5s;
+}
+
+@keyframes loader{
+  0%{
+  transform: scale(0);
+  opacity: 0;
+  }
+  50%{
+  opacity: 1;
+  }
+  100%{
+  transform: scale(1);
+  opacity: 0;
+  }
+}
+
+
+
+/* animation ends here */
+
+
+.dropdown .dropdown-toggle::after {
+    content: none;
+}
+
+.btn-secondary{
+  border-color: lightgrey;
+  width: 160px;
+  height: 40px;
+  color: #fff;
+
+  background: #D0D3D4;
+}
+.btn-secondary:hover{
+  cursor: pointer;
+
+}
+
+.button-link{
+  background: #987654;
+  border: none;
+}
+
+.button-link:hover{
+  height: 80px;
+  cursor: text;
+  background: rgb(139,69,19);/* #7E5109 */
+}
+
+.book-data{
+  font-family: serif;
+}
+
+ul li{
+  display: inline-flex;
+
+}
+.navbar-expand-md{
+  width: 100%;
+  height: 80px;
+  background: #987654;/*saddlebrown for hover (#8B4513) palebrown(#987654)best!!  */
+}
+.navbar-brand{
+  font-size: 35px;
+  font-family: sans-serif;
+}
+.navbar-brand .good{
+  font-family: Courier New;
+  color: #fff;
+}
+.navbar-brand .reads{
+  font-weight: bolder;
+}
+.nav-bar .nav-ul .nav-li{
+  font-size: 20px;
+  /*
+  width: 100px;
+  height: 80px;
+  background-color: red;
+  text-align: center;
+  */
+  width: 100px;
+  height: 60px;
+  background-color: red;
+  text-align: center;
+}
+/*    .nav-link:hover{
+  background: #8B4513;
+  cursor: pointer;
+  height: 75px;
+
+
+}*/
+
+
+.nav-bar .nav-ul .nav-input{
+  margin-left: 80px;
+}
+.nav-bar .nav-ul .nav-li .input{
+  border-radius: 5px;
+  height: 45px;
+  padding-bottom: 8px;
+
+}
+.nav-link{
+  font-size: 25px;
+  color: #fff;
+}
+
+.book-title{
+  color: #000;
+}
+.book-title:hover{
+  color: #987654;
+  text-decoration: none;
+}
+
+.btn-success{
+  border-radius: 5px solid #2ECC71;
+  background: #2ECC71;
+  width: 160px;
+  height: 40px;
+  color: #fff;
+}
+
+
+.read-btn:hover{
+  background: #28B463;
+}
+
+.btn-secondary{
+  border-color: lightgrey;
+  width: 160px;
+  height: 40px;
+
+  background: #D0D3D4;
+  }
+.btn .btn-secondary:hover{
+  cursor: pointer;
+  color: white;
+  background: red;
+}
+
+.small{/* small is for the footer */
+
+  color: black;
+  margin-top: 30px;
+
+}
+
+.book-paragraph{
+  line-height: 80px;
+}
+
+.book-image-home{
+  float: left;
+  margin-right: 20px;
+}
+
+.book-image-display{
+  float: left;
+  margin-right: 50px;
+}
+
+footer{
+  width: 100%;
+  height: 70px;
+  background: #987654;
+  position: fixed;
+  bottom: 0px;
+}
+
+
+.like_button{
+  background: red;
+
+}
+
+.profile{
+  float: right;
+}

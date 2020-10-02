@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Favorites{% endblock %}
+{% block content %}
+	<div class="container mb-5">
+		<div class="content-section mt-4">
+			{% if user.favorite_book.exists %}
+				<table class="table table-hover mt-3">
+					<thead>
+						<th>No</th>
+						<th>Img</th>
+						<th>Title</th>
+						<th>Barcode</th>
+						<th>ISBN</th>
+						<th>Book author</th>
+						<th>Read</th>
+						<th>Remove book</th>
+					</thead>
+					<tbody>
+						{% for book in user.favorite_book.all %}
+						<tr>
+							
+								<td>{{book.id}}</td>
+								<td><img src="{{book.book_image.url}}" width="50" height="45"></td>
+								<td>{{book.title}}</td>
+								<td>{{book.barcode}}</td>
+								<td>{{book.isbn}}</td>
+								<td>{{book.author}}</td>
+								<td><a href="{% url 'read_book' book.id %}" class="btn btn-info" style="background: #987654; border: none;">Read</a></td>
+								<td><a href="{% url 'favorite_book' book.id %}" class="btn btn-danger" >Remove</a></td>
+								
+							
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% else %}
+				<b>No favorites books found!!!.(To add a favorite book choose a book and click Add favorites)</b>
+			{% endif %}
+			<br><br><br>
+		</div>
+	</div>
+{% endblock %}

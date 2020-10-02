@@ -1,0 +1,112 @@
+{% extends 'main/base.html' %}
+{% block title %}Books{% endblock %}
+{% block content %}
+	<div class="container">
+
+		<div class="content-section mt-4">
+
+			<div>
+				<h1 style="font-family: sans-serif;">{{read.title}}</h1>
+				<h3><b>Author:</b><small><i class="text-muted ml-3">{{read.author}}</i></small>
+				<hr>
+				<img src="{{read.book_image.url}}" class="book-image-display" alt="" width="250" height="260">
+				<p>Released date: <small class="text-muted" style="font-family: serif;">{{read.date_added}}</small></p>
+
+				<p>ISBN: <small class="text-muted" style="font-family: serif;">{{read.isbn}}</small></p>
+				<p>Barcode: <small class="text-muted" style="font-family: serif;">{{read.barcode}}</small></p>
+				</h3>
+
+				<form action="{% url 'like_book' read.pk %}" method="post">
+			        	{% csrf_token %}
+			        	{% if user.is_authenticated %}
+				        	{% if liked %}
+				        		{% if liked > 1 %}
+				        			<button class="btn btn-danger mb-1 mr-2" name="book_id" type="submit" value="{{ read.id}}"><i class="far fa-thumbs-down"></i></button> <small>{{ total_likes }} Likes</small>
+								{% else %}
+									<button class="btn btn-danger mb-1 mr-2" name="book_id" type="submit" value="{{ read.id}}"><i class="far fa-thumbs-down"></i></button> <small>{{ total_likes }} Like</small>
+								{% endif %}
+
+
+				        	{% else %}
+				        		<button class="btn btn-primary mb-1" name="book_id" type="submit" value="{{ read.id}}"><i class="far fa-thumbs-up"></i></button> <small> {{ total_likes }} Likes</small>
+				        	{% endif %}
+				        {% else %}
+				        	<button class="btn btn-primary mb-1" name="book_id" type="submit" value="{{ read.id}}" disabled="on"><i class="far fa-thumbs-up"></i></button> <small>{{ total_likes }} Likes</small> (Must be logged in to like!! <a href="/login">Login Here</a>)
+				        {% endif %}
+
+				</form>
+			    <div class="favorite-section">
+			    	{% if user.is_authenticated %}
+				        {% if is_favorite %}
+			    			<h5>Remove favorite: <a href="{% url 'favorite_book' read.id %}" ><i class="fas fa-heart fa-lg"></i></a></h5>
+			    		{% else %}
+			    			<h5>Add favorite: <a href="{% url 'favorite_book' read.id %}"><i class="far fa-heart fa-lg"></i></a></h5>
+			    		{% endif %}
+
+			    	{% else %}
+			    		<p>Must be logged in to add to favorites <a href="/login">Login Here</a>)</p>
+			    	{% endif %}
+			    </div>
+
+
+				<div class="btn-group mt-1">
+				    <a href="{% url 'order_book' read.title %}" class="btn btn-success">Buy book</a>
+				    <div class="btn-group">
+				      <button type="button" class="btn btn-primary dropdown-toggle mr-3" data-toggle="dropdown"></button>
+				      <div class="dropdown-menu">
+				        <a class="dropdown-item" href="{% url 'read_book' read.id %}">Read Book</a>
+
+				        <a class="dropdown-item" href="#">Contact author</a>
+				      </div>
+			    	</div>
+					<a class="btn btn-secondary">Want a copy</a>
+				</div>
+				<!-- <p class="book-data">{{read.book}}</p>  -->
+				<br><br>
+				<div class="comment-section mt-4" style="margin-bottom: 200px;">
+
+					{% if not read.comments.all  %}
+						<legend class="border-bottom mb-4"><h2>Comments</h2></legend>
+						<strong>No comments... <a href="{% url 'add_comment' read.id %}" class="btn btn-secondary" style="background: #987654;" >Add one</a></strong>
+					{% else %}
+						<legend class="border-bottom mb-4">
+
+							<a href="{% url 'add_comment' read.id %}" class="btn btn-secondary float-right" style="background: #987654;" >Add comment</a>
+							<h2>Comments</h2>
+						</legend>
+						{% for com in read.comments.all %}
+
+
+
+							<article class="media content-section border shadow p-3 mb-5 bg-white rounded">
+					          <img src="{{ com.user.profile.image.url }}" class="rounded-circle article-img mr-3" width="70" height="70">
+					          <div class="media-body">
+					            <div class="article-metadata">
+					              <small class="mr-2" style="color: blue;">{{ com.user.username }}</small>
+					              <small class="text-muted">{{ com.date_added|date:"F d, Y" }}</small>
+					            </div>
+					            <h2><p class="article-title">{{ com.title }}</p></h2>
+					            <p class="article-content">{{ com.comments }}</p>
+
+											<a href="#"><i class="far fa-heart"></i></a> Likes: 255
+											<a href="#" class="btn btn-info btn-sm" style="background: #987654;border-color:#987654;">Reply</a>
+											
+					          </div>
+					        </article>
+
+					    {% endfor %}
+
+				    {% endif %}
+
+
+				</div>
+
+
+			</div>
+
+
+
+
+		</div>
+	</div>
+{% endblock %}

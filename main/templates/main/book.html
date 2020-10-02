@@ -1,0 +1,81 @@
+{% extends 'main/base.html' %}
+{% block title %}Read book{% endblock %}
+{% block content %}
+	<div class="container mb-5">
+		<div class="content-section mt-4">
+			<img src="{{read.book_image.url}}" class="book-image-home" alt="" width="110" height="180">
+			<h1 style="font-family: sans-serif; color: #987654;">{{read.title}}</h1>
+			<h2><b>Author:</b><small><i class="text-muted ml-3">{{read.author}}</i></small><br>
+			<b>Released date:</b><small><i class="text-muted ml-3 mt-2">{{read.date_added}}</i></small><br>
+
+			<div style="display: flex; margin-top: 10px;">
+				{% if liked %}
+					{% if liked > 1 %}
+	        			<button class="btn btn-danger mb-1 mr-2" name="book_id" type="submit" value="{{ read.id}}"><i class="far fa-thumbs-down"></i></button> <small>{{ total_likes }} Likes</small>
+					{% else %}
+						<button class="btn btn-danger mb-1 mr-2" name="book_id" type="submit" value="{{ read.id}}"><i class="far fa-thumbs-down"></i></button> <small>{{ total_likes }} Like</small>
+					{% endif %}
+
+
+	        	{% else %}
+	        		<button class="btn btn-primary mb-1 mr-2" name="book_id" type="submit" value="{{ read.id}}"><i class="far fa-thumbs-up"></i></button> <small> {{ total_likes }} Likes</small>
+	        	{% endif %}
+	        	<h4><b style="margin-left: 30px;margin-right: 30px;">|</b></h4>
+	        	{% if is_favorite %}
+	    			<small style="">Remove favorite: <a href="{% url 'favorite_book' read.id %}" ><i class="fas fa-heart fa-lg"></i></a></small>
+	    		{% else %}
+	    			<small style="">Add favorite: <a href="{% url 'favorite_book' read.id %}"><i class="far fa-heart fa-lg"></i></a></small> 
+	    		{% endif %}
+			</div>
+			
+			</h2>
+			<hr>
+			<sub class="book-paragraph"><h4>{{read.book}}</h4></sub>
+			<br><br><br>
+
+			<h2>
+				<b>Barcode:</b><small><i class="text-muted ml-3 mt-2">{{read.barcode}}</i></small><br>
+				<b>ISBN:</b><small><i class="text-muted ml-3 mt-2">{{read.isbn}}</i></small>
+				
+			</h2>
+			<!-- <p class="book-data">{{read.book}}</p>  -->
+
+			</h2>
+			<br>
+
+			<div class="comment-section mt-4" style="margin-bottom: 200px;">
+					
+				{% if not read.comments.all  %}
+					<legend class="border-bottom mb-4"><h2>Comments</h2></legend>
+					<strong>No comments... <a href="{% url 'add_comment' read.id %}" class="btn btn-secondary" style="background: #987654;" >Add one</a></strong>
+				{% else %}
+					<legend class="border-bottom mb-4">
+						
+						<a href="{% url 'add_comment' read.id %}" class="btn btn-secondary float-right" style="background: #987654;" >Add comment</a>
+						<h2>Comments</h2>
+					</legend>
+					{% for com in read.comments.all %}
+						
+
+
+						<article class="media content-section border shadow p-3 mb-5 bg-white rounded">
+				          <img src="{{ com.user.profile.image.url }}" class="rounded-circle article-img mr-3" width="70" height="70">
+				          <div class="media-body">
+				            <div class="article-metadata">
+				              <small class="mr-2" style="color: blue;">{{ com.user.username }}</small>
+				              <small class="text-muted">{{ com.date_added|date:"F d, Y" }}</small>
+				            </div>
+				            <h2><p class="article-title">{{ com.title }}</p></h2>
+				            <p class="article-content">{{ com.comments }}</p>
+				          </div>
+				        </article>
+
+				    {% endfor %}
+
+			    {% endif %}
+						
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

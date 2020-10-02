@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Home Page{% endblock %}
+{% block content %}
+
+	<h3>Results found: <small>{{length}}</small></h3>
+	{% for mtch in match %}
+	<div class="content-section">
+
+		<img src="{{mtch.book_image.url}}" class="book-image-home" alt="" width="110" height="155">
+		<div>
+			<h2><a class="book-title" href="{% url 'read' mtch.id %}">{{mtch.title}}</a></h2>
+			<small><b>Author: </b>{{mtch.author}}</small><br>
+			<!-- <i class="text-muted ml-1">{{mtch.date_added }}</i><br> -->
+			<small><b>Rank: </b></small><br>
+			<small><b>Likes: </b>{{mtch.total_likes}}</small><br>
+			<div class="btn-group">
+			    <a href="{% url 'order_book' mtch.title %}" class="btn btn-success">Buy book</a>
+			    <div class="btn-group">
+			      <button type="button" class="btn btn-primary dropdown-toggle mr-3" data-toggle="dropdown"></button>
+			      <div class="dropdown-menu">
+			        <a class="dropdown-item" href="{% url 'read_book' mtch.id %}">Read Book</a>
+			        <a class="dropdown-item" name="book_favorite">Favorite</a>
+			        <a class="dropdown-item" href="#">Contact author</a>
+			      </div>
+		    	</div>
+				<a class="btn btn-secondary" style="color: #fff;"> Want a copy</a>
+			</div>
+
+		  
+		 </div>
+		
+		<hr style="font-size: 100px; margin-bottom: 20px;">
+		
+	</div>
+		
+	{% endfor %}
+{% endblock %}
+

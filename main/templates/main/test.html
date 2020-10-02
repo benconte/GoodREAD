@@ -1,0 +1,144 @@
+{% extends 'main/base.html' %}
+{% block title %}Books{% endblock %}
+{% block content %}
+	<div class="container">
+
+		<div class="content-section mt-4">
+			
+			<div>
+				<h1 style="font-family: sans-serif;">{{read.title}}</h1>
+				<h3><b>Author:</b><small><i class="text-muted ml-3">{{read.author}}</i></small>
+				<hr>
+				<img src="{{read.book_image.url}}" class="book-image-display" alt="" width="250" height="260">
+				<p>Released date: <small class="text-muted" style="font-family: serif;">{{read.date_added}}</small></p>
+
+				<p>ISBN: <small class="text-muted" style="font-family: serif;">{{read.isbn}}</small></p>
+				<p>Barcode: <small class="text-muted" style="font-family: serif;">{{read.barcode}}</small></p>
+				</h3>
+
+				<form action="{% url 'like_book' read.pk %}" method="post">
+			        	{% csrf_token %}
+			        	{% if user.is_authenticated %}
+				        	{% if liked %}
+				        		{% if liked > 1 %}
+				        			<button class="btn btn-danger mb-1 mr-2" name="book_id" type="submit" value="{{ read.id}}"><i class="far fa-thumbs-down"></i></button> <small>{{ total_likes }} Likes</small>
+								{% else %}
+									<button class="btn btn-danger mb-1 mr-2" name="book_id" type="submit" value="{{ read.id}}"><i class="far fa-thumbs-down"></i></button> <small>{{ total_likes }} Like</small>
+								{% endif %}
+
+
+				        	{% else %}
+				        		<button class="btn btn-primary mb-1" name="book_id" type="submit" value="{{ read.id}}"><i class="far fa-thumbs-up"></i></button> <small> {{ total_likes }} Likes</small>
+				        	{% endif %}
+				        {% else %}
+				        	<button class="btn btn-primary mb-1" name="book_id" type="submit" value="{{ read.id}}" disabled="on"><i class="far fa-thumbs-up"></i></button> <small>{{ total_likes }} Likes</small> (Must be logged in to like!! <a href="/login">Login Here</a>)
+				        {% endif %}
+				        	
+				</form>
+			    <div class="favorite-section">
+			    	{% if user.is_authenticated %}
+				        {% if is_favorite %}
+			    			<h5>Remove favorite: <a href="{% url 'favorite_book' read.id %}" ><i class="fas fa-heart fa-lg"></i></a></h5>
+			    		{% else %}
+			    			<h5>Add favorite: <a href="{% url 'favorite_book' read.id %}"><i class="far fa-heart fa-lg"></i></a></h5> 
+			    		{% endif %}
+
+			    	{% else %}
+			    		<p>Must be logged in to add to favorites <a href="/login">Login Here</a>)</p>
+			    	{% endif %}
+			    </div>
+				    
+
+				<div class="btn-group mt-1">
+				    <a href="{% url 'order_book' read.title %}" class="btn btn-success">Buy book</a>
+				    <div class="btn-group">
+				      <button type="button" class="btn btn-primary dropdown-toggle mr-3" data-toggle="dropdown"></button>
+				      <div class="dropdown-menu">
+				        <a class="dropdown-item" href="{% url 'read_book' read.id %}">Read Book</a>
+				        
+				        <a class="dropdown-item" href="#">Contact author</a>
+				      </div>
+			    	</div>
+					<a class="btn btn-secondary">Want a copy</a>
+				</div>
+				<!-- <p class="book-data">{{read.book}}</p>  -->
+				<br><br>
+				<div class="comment-section mt-4" style="margin-bottom: 200px;">
+					<legend class="border-bottom mb-4"><h2>Comments</h2></legend>
+					{% if not read.comments.all  %}
+						<h2>No comments...<a href="">Add one</a></h2>
+					{% else %}
+						{% for com in read.comments.all %}
+						<strong>
+							{{com.name}} - 
+							{{com.date_added}}
+						</strong>
+						<br>
+							{{com.comments}}
+							<br> 
+						{% endfor %}
+						
+				    {% endif %}
+				    <br>
+						
+
+				</div>
+				    
+				    
+			</div>
+
+			
+			
+
+		</div>
+	</div>
+{% endblock %}
+
+<!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ -->
+from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import User
+from django.urls import reverse
+
+# Create your models here.
+class Books(models.Model):
+	# user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="booklist", null=True)
+	title = models.CharField(max_length=200)
+	book = models.TextField()
+	date_added = models.DateTimeField(default=timezone.now)
+	barcode = models.CharField(max_length=200)
+	isbn = models.CharField(max_length=200)
+	book_image = models.ImageField(upload_to="book_images", blank=True)
+	author = models.CharField(max_length=200)
+	likes = models.ManyToManyField(User, related_name="book_name", blank=True)
+	favorite = models.ManyToManyField(User, related_name="favorite_book", blank=True)
+	
+
+	def __str__(self):
+		return f"Books('{self.title}','{self.author}', '{self.date_added}')"
+
+	def total_likes(self):
+		return self.likes.count()
+
+	def get_absolute_url(self):
+		return reverse('home')
+
+class Comments(models.Model):
+	book = models.ForeignKey(Books, on_delete=models.CASCADE, related_name="comments", null=True)
+	name = models.CharField(max_length=200, blank=True)
+	comments = models.TextField(help_text="Write your comment here",blank=True)
+	date_added = models.DateTimeField(default=timezone.now)
+
+	def __str__(self):
+		return f"Comments('{self.book.title}', '{self.name}','{self.comments}', '{self.date_added}')"
+
+class BuyBook(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	book_name = models.CharField(max_length=200)
+	telephone = models.IntegerField()
+	date_purchased = models.DateTimeField(default=timezone.now)
+	address = models.CharField(max_length=100)
+	card_no = models.IntegerField()
+
+	def __str__(self):
+		return (f"Buy('{self.book_name}','{self.telephone}','{self.date_purchased}','{self.address}','{self.card_no}',)")
