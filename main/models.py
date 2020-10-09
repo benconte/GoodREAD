@@ -28,13 +28,25 @@ class Books(models.Model):
 
 class Comments(models.Model):
 	book = models.ForeignKey(Books, on_delete=models.CASCADE, related_name="comments", null=True)
-	# name = models.CharField(max_length=200, blank=True)
+	title = models.CharField(max_length=200, blank=True)
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="book_user", null=True)
 	comments = models.TextField(help_text="Write your comment here",blank=True)
 	date_added = models.DateTimeField(default=timezone.now)
+	likes = models.ManyToManyField(User, related_name="comments_likes", blank=True)
 
 	def __str__(self):
-		return f"Comments( '{self.user.username}','{self.comments}', '{self.date_added}')"
+		return f"Comments( '{self.user.username}','{self.book}', '{self.date_added}')"
+
+class CommentsReplys(models.Model):
+	comment = models.ForeignKey(Comments, on_delete=models.CASCADE, related_name="comment_reply", null=True)
+	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reply_user", null=True)
+	reply = models.TextField(help_text="Write your comment here",blank=True)
+	date_replied = models.DateTimeField(default=timezone.now)
+	likes = models.ManyToManyField(User, related_name="comments_reply_like", blank=True)
+	def __str__(self):
+		return f"Comment Replys( '{self.comment.user.username}','{self.reply}', '{self.date_replied}')"
+
+
 # '{self.book.title}',
 class BuyBook(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+{% block title %}GoodReads - Replys{% endblock %}
+{% block content %}
+	
+	<div class="content-section mt-3" style="margin-bottom: 200px;">
+		<div class="container">
+			<div>
+				<img src="{{reply.user.profile.image.url}}" class="book-image-display" alt="" width="100" height="100">
+				<h2 style="font-family: sans-serif; text-decoration: underline;" >{{reply.title}}</h2>
+				<b>Post Author:</b><small><i class="text-muted ml-3">{{reply.user.username}}</i></small>
+				<p>Posted on: <small class="text-muted" style="font-family: serif;">{{reply.date_added}}</small></p>
+				<p style="text-decoration: underline;">Comment</p>
+
+				<textarea disabled style="resize: none;">{{reply.comments}}</textarea>
+			</div>
+		 	<hr>
+		 	<legend class="border-bottom mb-4">
+
+				<a href="{% url 'reply_comment' reply.id %}" class="btn btn-secondary float-right" style="background: #987654;" >reply</a>
+				<h2>Comment replies</h2>
+			</legend>
+
+		 	<br>
+		 	{% for rep in reply.comment_reply.all %}
+		 		<article class="media content-section border shadow p-3 mb-5 bg-white rounded">
+		          <img src="{{ rep.user.profile.image.url }}" class="rounded-circle article-img mr-3" width="70" height="70">
+		          <div class="media-body">
+		            <div class="article-metadata">
+		            	{% if user.username == rep.user.username %}
+			              <small class="mr-2" ><a href="{% url 'profile' %}" style="color: blue;">{{ rep.user.username }}</a></small>
+			              <small class="text-muted">{{ rep.date_replied|date:"F d, Y" }}</small>
+			              <a href="{% url 'comment_reply_remove' rep.id %}" class="btn btn-danger btn-sm ml-2  float-right" type="submit">Delete comment</a>
+			            {% else %}
+			              <small class="mr-2" style="color: blue;">{{ rep.user.username }}</small>
+			              <small class="text-muted">{{ rep.date_replied|date:"F d, Y" }}</small>
+			            {% endif %}
+		            </div>
+		            <h2><p class="article-title border-bottom">{{ rep.title }}</p></h2>
+		            <p class="article-content">{{ rep.reply }}</p>				
+		          </div>
+		        </article>
+		 	{% endfor %}
+		 </div>	
+
+		 
+	</div>
+	
+{% endblock %}

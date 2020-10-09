@@ -1,16 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from .models import Books, Comments
-from .forms import CommentForm
+from .models import Books, Comments, CommentsReplys
+from .forms import CommentForm, CommentReplyForm
 from django.contrib import messages
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.models import User
-from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 # Create your views here.
+def error_404_view(request, exception):
+	return render(request, 'main/404.html')
+
 
 def home(request):
 	context = {"context":Books.objects.all()}
@@ -126,8 +128,8 @@ def read_book(request, id):
 		return render(request, "main/book.html", context)
 
 
-
-class AddCommentView(CreateView):
+# @login_required
+class AddCommentView(LoginRequiredMixin,CreateView):
 	model = Comments
 	form_class = CommentForm
 	# fields = '__all__'
@@ -139,4 +141,67 @@ class AddCommentView(CreateView):
 		return super().form_valid(form)
 
 	success_url = reverse_lazy('home')
+
+
+# @login_required
+class AddCommentReplyView(LoginRequiredMixin,CreateView):
+	model = CommentsReplys
+	form_class = CommentReplyForm
+	# fields = '__all__'
+	template_name = 'main/reply_comment.html'
+
+	def form_valid(self, form):
+		form.instance.comment_id = self.kwargs['id']
+		form.instance.user = self.request.user
+		return super().form_valid(form)
+
+	success_url = reverse_lazy('home')
+
+def remove_comment(request, id):
+	# in this function you don't need to add verification because i added them in the template
+	comment = get_object_or_404(Comments, id=id)
+
+	if comment:
+		comment.delete()
+		messages.success(request, 'Comment deleted successfully')
+		return HttpResponseRedirect('/')
+	else:
+		messages.warning(request, 'Can\'t delete comment')
+		return HttpResponseRedirect('/')
+
+def remove_comment_reply(request, id):
+	# in this function you don't need to add verification because i added them in the template
+	comment = get_object_or_404(CommentsReplys, id=id)
+
+	if comment:
+		comment.delete()
+		messages.success(request, 'Comment deleted successfully')
+		return HttpResponseRedirect('/')
+	else:
+		messages.warning(request, 'Can\'t delete comment')
+		return HttpResponseRedirect('/')
+
+# @login_required
+# class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+# 	model = Comments
+# 	success_url = '/'
+
+# 	def test_func(self):
+# 		comment = self.get_object()
+# 		if self.request.user == comment.user.username:
+# 			return True
+# 		return False
+
+
+def show_replys(request, id):
+	reply = Comments.objects.get(id = id)
+	if reply:
+		context = {
+			'reply':reply
+		}
+
+		return render(request, "main/comment_replys.html", context)
+
+	else:
+		return redirect("home")
 

@@ -82,14 +82,30 @@
 					          <img src="{{ com.user.profile.image.url }}" class="rounded-circle article-img mr-3" width="70" height="70">
 					          <div class="media-body">
 					            <div class="article-metadata">
+					             {% if user.username == com.user.username %}
 					              <small class="mr-2" style="color: blue;">{{ com.user.username }}</small>
 					              <small class="text-muted">{{ com.date_added|date:"F d, Y" }}</small>
+					              <a href="{% url 'remove_comment' com.id %}" class="btn btn-danger btn-sm ml-2 float-right" type="submit">Delete comment</a>
+					              
+					            {% else %}
+					              <small class="mr-2" style="color: blue;">{{ com.user.username }}</small>
+					              <small class="text-muted">{{ com.date_added|date:"F d, Y" }}</small>
+					            {% endif %}
 					            </div>
-					            <h2><p class="article-title">{{ com.title }}</p></h2>
+					            <h2><p class="article-title border-bottom">{{ com.title }}</p></h2>
 					            <p class="article-content">{{ com.comments }}</p>
 
 											<a href="#"><i class="far fa-heart"></i></a> Likes: 255
-											<a href="#" class="btn btn-info btn-sm" style="background: #987654;border-color:#987654;">Reply</a>
+											<a href="{% url 'reply_comment' com.id %}" class="btn btn-info btn-sm" style="background: #987654;border-color:#987654;" onclick="inputFieldDisplay();">Reply</a>
+											<br><br>
+
+												{% if not com.comment_reply.all %}
+													<small>No replys...</small>
+												{% else %}
+													<small>Read replys: <a href="{% url 'show_replys' com.id %}">Read</a></small>
+												{% endif %}
+
+
 											
 					          </div>
 					        </article>

@@ -213,3 +213,10 @@ footer{
 .profile{
   float: right;
 }
+
+
+/*404 error page*/
+
+.error{
+  font-size: 100px;
+}
