@@ -20,7 +20,6 @@ from main import urls
 import main
 from register import views as register_views
 from django.conf import settings
-from django.conf.urls import re_path
 from django.conf.urls.static import static
 
 urlpatterns = [
